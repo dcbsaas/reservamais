@@ -27,27 +27,50 @@ document.addEventListener('DOMContentLoaded', function() {
             item.classList.toggle('active');
         });
     });
-    
-    // Formulário de Lead
+  
+
+    // Formulário de Lead e evento de submit
+    document.addEventListener('DOMContentLoaded', function() {
+      
     const leadForm = document.getElementById('lead-form');
     const successModal = document.getElementById('success-modal');
     const closeModal = document.querySelector('.close');
     const closeButton = document.querySelector('.success-message button');
     
+
     if (leadForm) {
-        leadForm.addEventListener('submit', function(e) {
+            leadForm.addEventListener('submit', function(e) {
             e.preventDefault();
-            
-            // Aqui você adicionaria o código para enviar os dados do formulário para seu backend
-            // Por enquanto, apenas simulamos o sucesso
-            
-            // Exibe o modal de sucesso
-            successModal.style.display = 'flex';
-            
-            // Limpa o formulário
-            leadForm.reset();
-        });
-    }
+                
+            // Coletar os dados do formulário
+            const formData = new FormData(leadForm);
+            const formDataObj = {};
+            formData.forEach((value, key) => {
+                formDataObj[key] = value;
+            });
+                
+            // Adicionar data e hora do envio
+            formDataObj.dataHora = new Date().toLocaleString('pt-BR');
+             
+            // Enviar dados para o email usando Formspree
+                fetch('https://formspree.io/f/xyzjdvow', {
+                    method: 'POST',
+                    headers: {
+                        'Accept': 'application/json',
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(formDataObj )
+                })
+                .then(response => {
+                    if (response.ok) {
+                        // Exibe o modal de sucesso
+                        successModal.style.display = 'flex';
+                        
+                        // Limpa o formulário
+                        leadForm.reset();
+
+            });
+        }
     
     // Fechar o modal
     if (closeModal) {
@@ -68,7 +91,8 @@ document.addEventListener('DOMContentLoaded', function() {
             successModal.style.display = 'none';
         }
     });
-    
+
+
     // Smooth scroll para links de navegação
     const navLinks = document.querySelectorAll('header nav a, .footer-links a');
     
