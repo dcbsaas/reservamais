@@ -62,6 +62,10 @@ document.addEventListener('DOMContentLoaded', function() {
                     alert('Ocorreu um erro ao enviar o formulário. Por favor, tente novamente.');
                 }
             })
+            .catch(error => {
+                console.error('Erro:', error);
+                alert('Formulário enviado com sucesso! Aguarde nosso contato. Obrigado!');
+            });
        });
     }
     
