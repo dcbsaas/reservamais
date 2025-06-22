@@ -62,11 +62,7 @@ document.addEventListener('DOMContentLoaded', function() {
                     alert('Ocorreu um erro ao enviar o formulário. Por favor, tente novamente.');
                 }
             })
-            .catch(error => {
-                console.error('Erro:', error);
-                alert('Ocorreu um erro ao enviar o formulário. Por favor, tente novamente.');
-            });
-        });
+       });
     }
     
     // Fechar o modal
