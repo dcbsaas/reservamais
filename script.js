@@ -34,31 +34,22 @@ document.addEventListener('DOMContentLoaded', function() {
     const successModal = document.getElementById('success-modal');
     const closeModal = document.querySelector('.close');
     const closeButton = document.querySelector('.success-message button');
-    
 
     if (leadForm) {
         leadForm.addEventListener('submit', function(e) {
             e.preventDefault();
-                
-            // Coletar os dados do formulário
+            
+            // Usar FormData diretamente
             const formData = new FormData(leadForm);
-            const formDataObj = {};
-            formData.forEach((value, key) => {
-                formDataObj[key] = value;
-            });
-                
+            
             // Adicionar data e hora do envio
-            formDataObj.dataHora = new Date().toLocaleString('pt-BR');
-             
+            formData.append('dataHora', new Date().toLocaleString('pt-BR'));
+            
             // Enviar dados para o email usando Formspree
             fetch('https://formspree.io/f/xyzjdvow', {
                 method: 'POST',
-                headers: {
-                    'Accept': 'application/json',
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify(formDataObj )
-            })
+                body: formData // Enviar FormData diretamente, sem converter para JSON
+            } )
             .then(response => {
                 if (response.ok) {
                     // Exibe o modal de sucesso
@@ -66,7 +57,14 @@ document.addEventListener('DOMContentLoaded', function() {
                     
                     // Limpa o formulário
                     leadForm.reset();
+                } else {
+                    console.error('Erro ao enviar formulário:', response.status);
+                    alert('Ocorreu um erro ao enviar o formulário. Por favor, tente novamente.');
                 }
+            })
+            .catch(error => {
+                console.error('Erro:', error);
+                alert('Ocorreu um erro ao enviar o formulário. Por favor, tente novamente.');
             });
         });
     }
